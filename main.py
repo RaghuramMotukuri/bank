@@ -2,39 +2,37 @@ import streamlit as st
 import pandas as pd
 from supabase import create_client
 
-#//supabase configuration
-
+# Supabase configuration
 supabase_url="https://hzfsuubrxnammebwaotm.supabase.co"
 supabase_key="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imh6ZnN1dWJyeG5hbW1lYndhb3RtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjYwNDMzODEsImV4cCI6MjA4MTYxOTM4MX0.BGVb89liDXpQ_ZC-DWHrA4SPyQ3V4YZwZWRgP2huclk"
+supabase = create_client(supabase_url, supabase_key)
 
-supabase=create_client(supabase_url,supabase_key)
+# Streamlit UI
+st.title("HDFC BANK (Supabase)")
 
-#//streamlit UI
+menu = ("REGISTER", "VIEW")
+choice = st.sidebar.selectbox("Menu", menu)
 
-st.title("HDFC BANK(Supabase)")
+# REGISTER
+if choice == "REGISTER":
+    person_name = st.text_input("Enter Name")
+    bank_name = st.text_input("Bank Name")
+    account_number = st.text_input("Account Number")
+    ifsc_code = st.text_input("IFSC Code")
 
-menu=("REGISTER","VIEW")
-choice=st.sidebar.selectbox("Menu",menu)
-
-
-#//REGISTER
-
-if choice=="REGISTER":
-    name=st.text_input("enter name")
-    age=st.number_input("AGE",min_value=18)
-    account=int(st.number_input("ACCOUNT NUMBER"))
-    bal=st.number_input("BALANCE",min_value=500)
     if st.button("SAVE"):
         supabase.table("ban").insert({
-            "name":name,
-            "age":age,
-            "account":account,
-            "balance":bal}).execute()
-        st.success("user added successfully")
+            "person_name": person_name,
+            "bank_name": bank_name,
+            "account_number": account_number,
+            "ifsc_code": ifsc_code
+        }).execute()
 
-#// view student        
-if choice == "view":
-    st.subheader(" view user")
-    data= supabase.table("ban").select("*").execute()
-    df=pd.DataFrame(data.data)
+        st.success("User added successfully")
 
+# VIEW
+if choice == "VIEW":
+    st.subheader("View Users")
+    data = supabase.table("ban").select("*").execute()
+    df = pd.DataFrame(data.data)
+    st.dataframe(df)
