@@ -25,7 +25,7 @@ if choice=="REGISTER":
     account=int(st.number_input("ACCOUNT NUMBER"))
     bal=st.number_input("BALANCE",min_value=500)
     if st.button("SAVE"):
-        supabase.table("users").insert({
+        supabase.table("ban").insert({
             "name":name,
             "age":age,
             "account":account,
@@ -35,5 +35,6 @@ if choice=="REGISTER":
 #// view student        
 if choice == "view":
     st.subheader(" view user")
-    data= supabase.table("users").select("*").execute()
+    data= supabase.table("ban").select("*").execute()
     df=pd.DataFrame(data.data)
+
