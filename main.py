@@ -47,3 +47,4 @@ if choice == "VIEW":  # Changed from "view" to "VIEW"
             st.warning("No data found. Check if Row Level Security (RLS) is enabled without proper policies [web:26].")
     except Exception as e:
         st.error(f"Error fetching data: {e}")
+
